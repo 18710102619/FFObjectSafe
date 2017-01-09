@@ -15,6 +15,7 @@
 		3673FF921E232F9100D6EDE5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3673FF901E232F9100D6EDE5 /* LaunchScreen.storyboard */; };
 		3673FF9D1E232F9100D6EDE5 /* FFObjectSafeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3673FF9C1E232F9100D6EDE5 /* FFObjectSafeTests.m */; };
 		3673FFA81E232F9100D6EDE5 /* FFObjectSafeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3673FFA71E232F9100D6EDE5 /* FFObjectSafeUITests.m */; };
+		3673FFB71E232FC600D6EDE5 /* FFObjectSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 3673FFB61E232FC600D6EDE5 /* FFObjectSafe.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		3673FFA31E232F9100D6EDE5 /* FFObjectSafeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FFObjectSafeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3673FFA71E232F9100D6EDE5 /* FFObjectSafeUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFObjectSafeUITests.m; sourceTree = "<group>"; };
 		3673FFA91E232F9100D6EDE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3673FFB51E232FC600D6EDE5 /* FFObjectSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFObjectSafe.h; sourceTree = "<group>"; };
+		3673FFB61E232FC600D6EDE5 /* FFObjectSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFObjectSafe.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,8 @@
 		3673FF811E232F9100D6EDE5 /* FFObjectSafe */ = {
 			isa = PBXGroup;
 			children = (
+				3673FFB51E232FC600D6EDE5 /* FFObjectSafe.h */,
+				3673FFB61E232FC600D6EDE5 /* FFObjectSafe.m */,
 				3673FF851E232F9100D6EDE5 /* AppDelegate.h */,
 				3673FF861E232F9100D6EDE5 /* AppDelegate.m */,
 				3673FF881E232F9100D6EDE5 /* ViewController.h */,
@@ -276,6 +281,7 @@
 				3673FF8A1E232F9100D6EDE5 /* ViewController.m in Sources */,
 				3673FF871E232F9100D6EDE5 /* AppDelegate.m in Sources */,
 				3673FF841E232F9100D6EDE5 /* main.m in Sources */,
+				3673FFB71E232FC600D6EDE5 /* FFObjectSafe.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

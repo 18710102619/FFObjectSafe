@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "FFObjectSafe.h"
+
 
 @interface ViewController ()
 
@@ -16,14 +18,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    NSArray *array=[NSArray arrayWithArray:nil];
+    
+    //__NSArrayI
+    NSArray *arrayI = [NSArray arrayWithObjects:@1, @2, nil];
+    [arrayI objectAtIndex:4];
+    
+    //__NSArray0
+    NSArray *array0 = [NSArray array];
+    [array0 objectAtIndex:4];
+    
+    //__NSSingleObjectArrayI
+    NSArray *singleObjectArrayI = [NSArray arrayWithObjects:@1, nil];
+    [singleObjectArrayI objectAtIndex:4];
 }
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 @end
