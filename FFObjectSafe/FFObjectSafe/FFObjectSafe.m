@@ -138,3 +138,57 @@ void FFLog(const char* file, const char* func, int line, NSString* fmt, ...)
 }
 
 @end
+
+@implementation NSMutableArray (Safe)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        [array swizzleInstanceMethod:@selector(addObject:) withMethod:@selector(hookAddObject:)];
+        [array swizzleInstanceMethod:@selector(objectAtIndex:) withMethod:@selector(hookObjectAtIndex:)];
+        [array swizzleInstanceMethod:@selector(removeObjectAtIndex:) withMethod:@selector(hookRemoveObjectAtIndex:)];
+        [array swizzleInstanceMethod:@selector(insertObject:atIndex:) withMethod:@selector(hookInsertObject:atIndex:)];
+        [array swizzleInstanceMethod:@selector(replaceObjectAtIndex:withObject:) withMethod:@selector(hookReplaceObjectAtIndex:withObject:)];
+    });
+}
+
+- (void)hookAddObject:(id)anObject
+{
+    if (anObject) {
+        [self hookAddObject:anObject];
+    }
+}
+
+- (id)hookObjectAtIndex:(NSUInteger)index
+{
+    if (index < self.count) {
+        return [self hookObjectAtIndex:index];
+    }
+    return nil;
+}
+
+- (void)hookRemoveObjectAtIndex:(NSUInteger)index
+{
+    if (index < self.count) {
+        [self hookRemoveObjectAtIndex:index];
+    }
+}
+
+- (void)hookInsertObject:(id)anObject atIndex:(NSUInteger)index
+{
+    if (anObject && index <= self.count) {
+        [self hookInsertObject:anObject atIndex:index];
+    }
+}
+
+- (void)hookReplaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject
+{
+    if (index < self.count && anObject) {
+        [self hookReplaceObjectAtIndex:index withObject:anObject];
+    }
+}
+
+@end
+

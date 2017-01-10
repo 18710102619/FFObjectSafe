@@ -7,8 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "FFObjectSafe.h"
-
 
 @interface ViewController ()
 
@@ -19,19 +17,39 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSArray *array=[NSArray arrayWithArray:nil];
-    
+    [self testNSArray];
+    [self testNSMutableArray];
+}
+
+- (void)testNSArray
+{
     //__NSArrayI
     NSArray *arrayI = [NSArray arrayWithObjects:@1, @2, nil];
     [arrayI objectAtIndex:4];
     
     //__NSArray0
-    NSArray *array0 = [NSArray array];
+    NSArray *array0 = [NSArray arrayWithArray:nil];
     [array0 objectAtIndex:4];
     
     //__NSSingleObjectArrayI
     NSArray *singleObjectArrayI = [NSArray arrayWithObjects:@1, nil];
     [singleObjectArrayI objectAtIndex:4];
 }
+
+- (void)testNSMutableArray
+{
+    NSMutableArray *mArray=[NSMutableArray arrayWithObjects:@1, @2, nil];
+    
+    [mArray addObject:nil];
+    
+    [mArray objectAtIndex:5];
+    
+    [mArray removeObjectAtIndex:5];
+    
+    [mArray insertObject:@6 atIndex:5];
+    
+    [mArray replaceObjectAtIndex:5 withObject:@6];
+}
+
 
 @end
