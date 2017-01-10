@@ -89,7 +89,7 @@
         NSObject *obj = [[NSObject alloc] init];
         //KVC
         [obj swizzleInstanceMethod:@selector(valueForKey:) withMethod:@selector(hookValueForKey:)];
-        [obj swizzleInstanceMethod:@selector(setObject:forKey:) withMethod:@selector(hookSetValue:forKey:)];
+        [obj swizzleInstanceMethod:@selector(setValue:forKey:) withMethod:@selector(hookSetValue:forKey:)];
         //KVO
         [obj swizzleInstanceMethod:@selector(addObserver:forKeyPath:options:context:) withMethod:@selector(hookAddObserver:forKeyPath:options:context:)];
         [obj swizzleInstanceMethod:@selector(removeObserver:forKeyPath:) withMethod:@selector(hookRemoveObserver:forKeyPath:)];
@@ -329,3 +329,43 @@
 }
 
 @end
+
+#pragma mark - NSUserDefaults
+
+@implementation NSUserDefaults (Safe)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSUserDefaults *obj = [[NSUserDefaults alloc] init];
+        [obj swizzleInstanceMethod:@selector(objectForKey:) withMethod:@selector(hookObjectForKey:)];
+        [obj swizzleInstanceMethod:@selector(setObject:forKey:) withMethod:@selector(hookSetObject:forKey:)];
+        [obj swizzleInstanceMethod:@selector(removeObjectForKey:) withMethod:@selector(hookRemoveObjectForKey:)];
+    });
+}
+
+- (id)hookObjectForKey:(NSString *)defaultName
+{
+    if (defaultName) {
+        return [self hookObjectForKey:defaultName];
+    }
+    return nil;
+}
+
+- (void)hookSetObject:(id)value forKey:(NSString *)defaultName
+{
+    if (value && defaultName) {
+        [self hookSetValue:value forKey:defaultName];
+    }
+}
+
+- (void)hookRemoveObjectForKey:(NSString *)defaultName
+{
+    if (defaultName) {
+        [self hookRemoveObjectForKey:defaultName];
+    }
+}
+
+@end
+

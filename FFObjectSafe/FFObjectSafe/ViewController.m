@@ -97,4 +97,15 @@
     [mDict removeObjectForKey:nil];
 }
 
+- (void)testUserDefaults
+{
+    NSUserDefaults *obj = [[NSUserDefaults alloc] init];
+    
+    [obj objectForKey:nil];
+    
+    [obj setObject:nil forKey:@"setting"];
+    
+    [obj removeObjectForKey:nil];
+}
+
 @end
