@@ -9,19 +9,6 @@
 #import "FFObjectSafe.h"
 #import <objc/runtime.h>
 
-#define FFAssert(condition, ...) \
-if (!(condition)) { \
-    FFLog(__FILE__, __FUNCTION__, __LINE__, __VA_ARGS__); \
-} \
-NSAssert(condition, @"%@", __VA_ARGS__);
-
-void FFLog(const char* file, const char* func, int line, NSString* fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-    NSLog(@"%s|%s|%d|%@", file, func, line, [[NSString alloc] initWithFormat:fmt arguments:args]);
-    va_end(args);
-}
 
 @implementation NSObject (Swizzle)
 
@@ -91,6 +78,8 @@ void FFLog(const char* file, const char* func, int line, NSString* fmt, ...)
 
 @end
 
+#pragma mark - NSArray
+
 @implementation NSArray (Safe)
 
 + (void)load
@@ -139,18 +128,20 @@ void FFLog(const char* file, const char* func, int line, NSString* fmt, ...)
 
 @end
 
+#pragma mark - NSMutableArray
+
 @implementation NSMutableArray (Safe)
 
 + (void)load
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSMutableArray *array = [[NSMutableArray alloc] init];
-        [array swizzleInstanceMethod:@selector(addObject:) withMethod:@selector(hookAddObject:)];
-        [array swizzleInstanceMethod:@selector(objectAtIndex:) withMethod:@selector(hookObjectAtIndex:)];
-        [array swizzleInstanceMethod:@selector(removeObjectAtIndex:) withMethod:@selector(hookRemoveObjectAtIndex:)];
-        [array swizzleInstanceMethod:@selector(insertObject:atIndex:) withMethod:@selector(hookInsertObject:atIndex:)];
-        [array swizzleInstanceMethod:@selector(replaceObjectAtIndex:withObject:) withMethod:@selector(hookReplaceObjectAtIndex:withObject:)];
+        NSMutableArray *mArray = [[NSMutableArray alloc] init];
+        [mArray swizzleInstanceMethod:@selector(addObject:) withMethod:@selector(hookAddObject:)];
+        [mArray swizzleInstanceMethod:@selector(objectAtIndex:) withMethod:@selector(hookObjectAtIndex:)];
+        [mArray swizzleInstanceMethod:@selector(removeObjectAtIndex:) withMethod:@selector(hookRemoveObjectAtIndex:)];
+        [mArray swizzleInstanceMethod:@selector(insertObject:atIndex:) withMethod:@selector(hookInsertObject:atIndex:)];
+        [mArray swizzleInstanceMethod:@selector(replaceObjectAtIndex:withObject:) withMethod:@selector(hookReplaceObjectAtIndex:withObject:)];
     });
 }
 
@@ -192,3 +183,87 @@ void FFLog(const char* file, const char* func, int line, NSString* fmt, ...)
 
 @end
 
+#pragma mark - NSDictionary
+
+@implementation NSDictionary (Safe)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        // 类方法
+        [NSDictionary swizzleClassMethod:@selector(dictionaryWithObject:forKey:) withMethod:@selector(hookDictionaryWithObject:forKey:)];
+        
+        //__NSDictionaryI
+        NSDictionary *dictI = [[NSDictionary alloc] initWithObjectsAndKeys:@0, @"0", @1, @"1",nil];
+        [dictI swizzleInstanceMethod:@selector(objectForKey:) withMethod:@selector(hookObjectForKey:)];
+        
+        //__NSDictionary0
+        NSDictionary *dict0 = [[NSDictionary alloc] init];
+        [dict0 swizzleInstanceMethod:@selector(objectForKey:) withMethod:@selector(hookObjectForKey:)];
+        
+        //__NSArraySingleEntryDictionaryI
+        NSDictionary *singleDictI = [[NSDictionary alloc] initWithObjectsAndKeys:@0, @"0", nil];
+        [singleDictI swizzleInstanceMethod:@selector(objectForKey:) withMethod:@selector(hookObjectForKey:)];
+        
+    });
+}
+
++ (instancetype) hookDictionaryWithObject:(id)object forKey:(id)key
+{
+    if (object && key) {
+        return [self hookDictionaryWithObject:object forKey:key];
+    }
+    return nil;
+}
+
+- (id)hookObjectForKey:(id)aKey
+{
+    if (aKey){
+        return [self hookObjectForKey:aKey];
+    }
+    return nil;
+}
+
+@end
+
+#pragma mark - NSMutableDictionary
+
+@implementation NSMutableDictionary (Safe)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableDictionary *mDict=[[NSMutableDictionary alloc] init];
+        [mDict swizzleInstanceMethod:@selector(objectForKey:) withMethod:@selector(hookObjectForKey:)];
+        [mDict swizzleInstanceMethod:@selector(setObject:forKey:) withMethod:@selector(hookSetObject:forKey:)];
+        [mDict swizzleInstanceMethod:@selector(removeObjectForKey:) withMethod:@selector(hookRemoveObjectForKey:)];
+
+    });
+}
+
+- (id)hookObjectForKey:(id)aKey
+{
+    if (aKey){
+        return [self hookObjectForKey:aKey];
+    }
+    return nil;
+}
+
+- (void)hookSetObject:(id)anObject forKey:(id)aKey
+{
+    if (anObject && aKey) {
+        [self hookSetObject:anObject forKey:aKey];
+    }
+}
+
+- (void)hookRemoveObjectForKey:(id)aKey
+{
+    if (aKey) {
+        [self hookRemoveObjectForKey:aKey];
+    }
+}
+
+@end

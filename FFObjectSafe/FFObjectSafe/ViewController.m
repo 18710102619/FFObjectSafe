@@ -19,6 +19,7 @@
     
     [self testNSArray];
     [self testNSMutableArray];
+    [self testNSDictionary];
 }
 
 - (void)testNSArray
@@ -51,5 +52,30 @@
     [mArray replaceObjectAtIndex:5 withObject:@6];
 }
 
+- (void)testNSDictionary
+{
+    //__NSDictionaryI
+    NSDictionary *dictI = [[NSDictionary alloc] initWithObjectsAndKeys:@0, @"0", @1, @"1",nil];
+    [dictI objectForKey:nil];
+
+    //__NSDictionary0
+    NSDictionary *dict0 = [NSDictionary dictionaryWithObject:nil forKey:@"0"];
+    [dictI objectForKey:nil];
+    
+    //__NSArraySingleEntryDictionaryI
+    NSDictionary *singleDictI = [[NSDictionary alloc] initWithObjectsAndKeys:@0, @"0", nil];
+    [dictI objectForKey:nil];
+}
+
+- (void)testNSMutableDictionary
+{
+    NSMutableDictionary *mDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@0, @"0", @1, @"1",nil];
+    
+    [mDict objectForKey:nil];
+    
+    [mDict setValue:nil forKey:@"0"];
+    
+    [mDict removeObjectForKey:nil];
+}
 
 @end
