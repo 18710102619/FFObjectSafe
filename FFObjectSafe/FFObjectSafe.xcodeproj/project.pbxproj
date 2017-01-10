@@ -16,6 +16,7 @@
 		3673FF9D1E232F9100D6EDE5 /* FFObjectSafeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3673FF9C1E232F9100D6EDE5 /* FFObjectSafeTests.m */; };
 		3673FFA81E232F9100D6EDE5 /* FFObjectSafeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3673FFA71E232F9100D6EDE5 /* FFObjectSafeUITests.m */; };
 		3673FFB71E232FC600D6EDE5 /* FFObjectSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 3673FFB61E232FC600D6EDE5 /* FFObjectSafe.m */; };
+		3673FFBA1E24AE6800D6EDE5 /* FFObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3673FFB91E24AE6800D6EDE5 /* FFObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		3673FFA91E232F9100D6EDE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3673FFB51E232FC600D6EDE5 /* FFObjectSafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFObjectSafe.h; sourceTree = "<group>"; };
 		3673FFB61E232FC600D6EDE5 /* FFObjectSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFObjectSafe.m; sourceTree = "<group>"; };
+		3673FFB81E24AE6800D6EDE5 /* FFObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFObject.h; sourceTree = "<group>"; };
+		3673FFB91E24AE6800D6EDE5 /* FFObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +107,8 @@
 		3673FF811E232F9100D6EDE5 /* FFObjectSafe */ = {
 			isa = PBXGroup;
 			children = (
+				3673FFB81E24AE6800D6EDE5 /* FFObject.h */,
+				3673FFB91E24AE6800D6EDE5 /* FFObject.m */,
 				3673FFB51E232FC600D6EDE5 /* FFObjectSafe.h */,
 				3673FFB61E232FC600D6EDE5 /* FFObjectSafe.m */,
 				3673FF851E232F9100D6EDE5 /* AppDelegate.h */,
@@ -278,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3673FFBA1E24AE6800D6EDE5 /* FFObject.m in Sources */,
 				3673FF8A1E232F9100D6EDE5 /* ViewController.m in Sources */,
 				3673FF871E232F9100D6EDE5 /* AppDelegate.m in Sources */,
 				3673FF841E232F9100D6EDE5 /* main.m in Sources */,
@@ -511,6 +517,7 @@
 				3673FFAE1E232F9100D6EDE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3673FFAF1E232F9100D6EDE5 /* Build configuration list for PBXNativeTarget "FFObjectSafeTests" */ = {
 			isa = XCConfigurationList;
@@ -519,6 +526,7 @@
 				3673FFB11E232F9100D6EDE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3673FFB21E232F9100D6EDE5 /* Build configuration list for PBXNativeTarget "FFObjectSafeUITests" */ = {
 			isa = XCConfigurationList;
@@ -527,6 +535,7 @@
 				3673FFB41E232F9100D6EDE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "FFObject.h"
 
 @interface ViewController ()
 
@@ -17,9 +18,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self testNSObject];
+    
     [self testNSArray];
     [self testNSMutableArray];
+    
     [self testNSDictionary];
+    [self testNSMutableDictionary];
+}
+
+- (void)testNSObject
+{
+    FFObject *obj=[[FFObject alloc]init];
+    
+    [obj valueForKey:nil];
+    
+    [obj setValue:nil forKey:@"age"];
+    
+    [obj addObserver:nil forKeyPath:@"name" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    
+    [obj removeObserver:self forKeyPath:@"name" context:nil];
 }
 
 - (void)testNSArray
@@ -74,6 +92,7 @@
     [mDict objectForKey:nil];
     
     [mDict setValue:nil forKey:@"0"];
+    [mDict setObject:nil forKey:@"0"];
     
     [mDict removeObjectForKey:nil];
 }

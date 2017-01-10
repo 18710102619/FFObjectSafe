@@ -9,7 +9,6 @@
 #import "FFObjectSafe.h"
 #import <objc/runtime.h>
 
-
 @implementation NSObject (Swizzle)
 
 /**
@@ -73,6 +72,69 @@
                                                 method_getImplementation(swizzledMethod),
                                                 method_getTypeEncoding(swizzledMethod)),
                             method_getTypeEncoding(originalMethod));
+    }
+}
+
+@end
+
+#pragma mark - NSObject
+
+@implementation NSObject(Safe)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        NSObject *obj = [[NSObject alloc] init];
+        //KVC
+        [obj swizzleInstanceMethod:@selector(valueForKey:) withMethod:@selector(hookValueForKey:)];
+        [obj swizzleInstanceMethod:@selector(setObject:forKey:) withMethod:@selector(hookSetValue:forKey:)];
+        //KVO
+        [obj swizzleInstanceMethod:@selector(addObserver:forKeyPath:options:context:) withMethod:@selector(hookAddObserver:forKeyPath:options:context:)];
+        [obj swizzleInstanceMethod:@selector(removeObserver:forKeyPath:) withMethod:@selector(hookRemoveObserver:forKeyPath:)];
+   
+    });
+}
+
+- (id)hookValueForKey:(NSString *)key
+{
+    if (key) {
+        return [self hookValueForKey:key];
+    }
+    return nil;
+}
+
+- (void)hookSetValue:(id)value forKey:(NSString *)key
+{
+    if (value && key) {
+        [self hookSetValue:value forKey:key];
+    }
+}
+
+- (void)hookAddObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
+{
+    if (observer || keyPath) {
+        return;
+    }
+    @try {
+        [self hookAddObserver:observer forKeyPath:keyPath options:options context:context];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"hookAddObserver ex: %@", [exception callStackSymbols]);
+    }
+}
+
+- (void)hookRemoveObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath
+{
+    if (!observer || !keyPath.length) {
+        return;
+    }
+    @try {
+        [self hookRemoveObserver:observer forKeyPath:keyPath];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"hookRemoveObserver ex: %@", [exception callStackSymbols]);
     }
 }
 
@@ -220,7 +282,7 @@
 
 - (id)hookObjectForKey:(id)aKey
 {
-    if (aKey){
+    if (aKey) {
         return [self hookObjectForKey:aKey];
     }
     return nil;
@@ -246,7 +308,7 @@
 
 - (id)hookObjectForKey:(id)aKey
 {
-    if (aKey){
+    if (aKey) {
         return [self hookObjectForKey:aKey];
     }
     return nil;
