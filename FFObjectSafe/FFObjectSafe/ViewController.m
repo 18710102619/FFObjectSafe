@@ -95,6 +95,8 @@
     [mDict setObject:nil forKey:@"0"];
     
     [mDict removeObjectForKey:nil];
+    
+    mDict[@"1"]=nil; //字面量写法
 }
 
 - (void)testUserDefaults

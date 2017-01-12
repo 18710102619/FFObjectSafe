@@ -79,7 +79,7 @@
 
 #pragma mark - NSObject
 
-@implementation NSObject(Safe)
+@implementation NSObject (Safe)
 
 + (void)load
 {
@@ -136,6 +136,144 @@
     @catch (NSException *exception) {
         NSLog(@"hookRemoveObserver ex: %@", [exception callStackSymbols]);
     }
+}
+
+@end
+
+#pragma mark - NSString
+
+@implementation NSString (Safe)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [NSString swizzleClassMethod:@selector(stringWithUTF8String:) withMethod:@selector(hookStringWithUTF8String:)];
+        
+        NSString *str = [[NSString alloc] init];
+        [str swizzleInstanceMethod:@selector(stringByAppendingString:) withMethod:@selector(hookStringByAppendingString:)];
+        [str swizzleInstanceMethod:@selector(substringFromIndex:) withMethod:@selector(hookSubstringFromIndex:)];
+        [str swizzleInstanceMethod:@selector(substringToIndex:) withMethod:@selector(hookSubstringToIndex:)];
+        [str swizzleInstanceMethod:@selector(substringWithRange:) withMethod:@selector(hookSubstringWithRange:)];
+    });
+}
+
++ (NSString *)hookStringWithUTF8String:(const char *)nullTerminatedCString
+{
+    if (nullTerminatedCString) {
+        return [self hookStringWithUTF8String:nullTerminatedCString];
+    }
+    return nil;
+}
+
+- (NSString *)hookStringByAppendingString:(NSString *)aString
+{
+    if (aString){
+        return [self hookStringByAppendingString:aString];
+    }
+    return self;
+}
+
+- (NSString *)hookSubstringFromIndex:(NSUInteger)from
+{
+    if (from <= self.length) {
+        return [self hookSubstringFromIndex:from];
+    }
+    return nil;
+}
+
+- (NSString *)hookSubstringToIndex:(NSUInteger)to
+{
+    if (to <= self.length) {
+        return [self hookSubstringToIndex:to];
+    }
+    return self;
+}
+
+- (NSString *)hookSubstringWithRange:(NSRange)range
+{
+    if (range.location + range.length <= self.length) {
+        return [self hookSubstringWithRange:range];
+    }
+    else if (range.location < self.length) {
+        return [self hookSubstringWithRange:NSMakeRange(range.location, self.length-range.location)];
+    }
+    return nil;
+}
+
+@end
+
+@implementation NSMutableString (Safe)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableString *str = [[NSMutableString alloc] init];
+        [str swizzleInstanceMethod:@selector(appendString:) withMethod:@selector(hookAppendString:)];
+        [str swizzleInstanceMethod:@selector(insertString:atIndex:) withMethod:@selector(hookInsertString:atIndex:)];
+        [str swizzleInstanceMethod:@selector(deleteCharactersInRange:) withMethod:@selector(hookDeleteCharactersInRange:)];
+        [str swizzleInstanceMethod:@selector(stringByAppendingString:) withMethod:@selector(hookStringByAppendingString:)];
+        [str swizzleInstanceMethod:@selector(substringFromIndex:) withMethod:@selector(hookSubstringFromIndex:)];
+        [str swizzleInstanceMethod:@selector(substringToIndex:) withMethod:@selector(hookSubstringToIndex:)];
+        [str swizzleInstanceMethod:@selector(substringWithRange:) withMethod:@selector(hookSubstringWithRange:)];
+    });
+}
+
+- (void)hookAppendString:(NSString *)aString
+{
+    if (aString) {
+        [self hookAppendString:aString];
+    }
+}
+
+- (void)hookInsertString:(NSString *)aString atIndex:(NSUInteger)loc
+{
+    if (aString && loc <= self.length) {
+        [self hookInsertString:aString atIndex:loc];
+    }
+}
+
+- (void)hookDeleteCharactersInRange:(NSRange)range
+{
+    if (range.location + range.length <= self.length) {
+        [self hookDeleteCharactersInRange:range];
+    }
+}
+
+- (NSString *)hookStringByAppendingString:(NSString *)aString
+{
+    if (aString){
+        return [self hookStringByAppendingString:aString];
+    }
+    return self;
+}
+
+- (NSString *)hookSubstringFromIndex:(NSUInteger)from
+{
+    if (from <= self.length) {
+        return [self hookSubstringFromIndex:from];
+    }
+    return nil;
+}
+
+- (NSString *)hookSubstringToIndex:(NSUInteger)to
+{
+    if (to <= self.length) {
+        return [self hookSubstringToIndex:to];
+    }
+    return self;
+}
+
+- (NSString *)hookSubstringWithRange:(NSRange)range
+{
+    if (range.location + range.length <= self.length) {
+        return [self hookSubstringWithRange:range];
+    }
+    else if (range.location < self.length) {
+        return [self hookSubstringWithRange:NSMakeRange(range.location, self.length-range.location)];
+    }
+    return nil;
 }
 
 @end
