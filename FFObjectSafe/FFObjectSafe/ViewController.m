@@ -53,6 +53,8 @@
     //__NSSingleObjectArrayI
     NSArray *singleObjectArrayI = [NSArray arrayWithObjects:@1, nil];
     [singleObjectArrayI objectAtIndex:4];
+    
+    id value=arrayI[4]; //字面量写法
 }
 
 - (void)testNSMutableArray
