@@ -85,7 +85,6 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        
         NSObject *obj = [[NSObject alloc] init];
         //KVC
         [obj swizzleInstanceMethod:@selector(valueForKey:) withMethod:@selector(hookValueForKey:)];
@@ -93,7 +92,6 @@
         //KVO
         [obj swizzleInstanceMethod:@selector(addObserver:forKeyPath:options:context:) withMethod:@selector(hookAddObserver:forKeyPath:options:context:)];
         [obj swizzleInstanceMethod:@selector(removeObserver:forKeyPath:) withMethod:@selector(hookRemoveObserver:forKeyPath:)];
-   
     });
 }
 
@@ -502,6 +500,28 @@
 {
     if (defaultName) {
         [self hookRemoveObjectForKey:defaultName];
+    }
+}
+
+@end
+
+#pragma mark - NSCache
+
+@implementation NSCache(Safe)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSCache *cache = [[NSCache alloc] init];
+        [cache swizzleInstanceMethod:@selector(setObject:forKey:) withMethod:@selector(hookSetObject:forKey:)];
+    });
+}
+
+- (void)hookSetObject:(id)obj forKey:(id)key
+{
+    if (obj && key) {
+        [self hookSetObject:obj forKey:key];
     }
 }
 
