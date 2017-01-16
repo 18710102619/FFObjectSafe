@@ -492,7 +492,7 @@
 - (void)hookSetObject:(id)value forKey:(NSString *)defaultName
 {
     if (value && defaultName) {
-        [self hookSetValue:value forKey:defaultName];
+        [self hookSetObject:value forKey:defaultName];
     }
 }
 

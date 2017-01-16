@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "FFObject.h"
+#import "FFPerson.h"
 
 @interface ViewController ()
 
@@ -29,15 +29,18 @@
 
 - (void)testNSObject
 {
-    FFObject *obj=[[FFObject alloc]init];
+    FFPerson *per=[[FFPerson alloc]init];
     
-    [obj valueForKey:nil];
+    [per valueForKey:nil];
     
-    [obj setValue:nil forKey:@"age"];
+    [per setValue:nil forKey:@"age"];
     
-    [obj addObserver:nil forKeyPath:@"name" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    [per addObserver:nil forKeyPath:@"name" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     
-    [obj removeObserver:self forKeyPath:@"name" context:nil];
+    [per removeObserver:self forKeyPath:@"name" context:nil];
+    
+//    [FFObject classMethod];
+    [per instanceMethod];
 }
 
 - (void)testNSArray
