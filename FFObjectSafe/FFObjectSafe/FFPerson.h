@@ -13,7 +13,6 @@
 @property(nonatomic,copy)NSString *name;
 @property(nonatomic,assign)int *age;
 
-//+ (void)classMethod;
 - (void)instanceMethod;
 
 @end

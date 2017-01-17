@@ -4,7 +4,7 @@
 //
 //  Created by 张玲玉 on 2017/1/10.
 //  Copyright © 2017年 bj.zly.com. All rights reserved.
-//
+//  通过消息转发，捕获异常
 
 #import "FFObject.h"
 #import <objc/runtime.h>
