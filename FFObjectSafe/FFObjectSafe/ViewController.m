@@ -31,7 +31,8 @@
 {
     FFPerson *per=[[FFPerson alloc]init];
     
-    [per instanceMethod];
+    [per eat];
+    [FFPerson run];
     
     [per valueForKey:nil];
     
@@ -39,7 +40,7 @@
     
     [per addObserver:nil forKeyPath:@"name" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     
-    [per removeObserver:self forKeyPath:@"name" context:nil];
+    //[per removeObserver:self forKeyPath:@"name" context:nil];
 }
 
 - (void)testNSArray

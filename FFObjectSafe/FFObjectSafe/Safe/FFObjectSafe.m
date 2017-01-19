@@ -92,6 +92,9 @@
         //KVO
         [obj swizzleInstanceMethod:@selector(addObserver:forKeyPath:options:context:) withMethod:@selector(hookAddObserver:forKeyPath:options:context:)];
         [obj swizzleInstanceMethod:@selector(removeObserver:forKeyPath:) withMethod:@selector(hookRemoveObserver:forKeyPath:)];
+        //消息转发
+        [obj swizzleInstanceMethod:@selector(methodSignatureForSelector:) withMethod:@selector(hookMethodSignatureForSelector:)];
+        [obj swizzleInstanceMethod:@selector(forwardInvocation:) withMethod:@selector(hookForwardInvocation:)];
     });
 }
 
@@ -133,6 +136,25 @@
     }
     @catch (NSException *exception) {
         NSLog(@"hookRemoveObserver ex: %@", [exception callStackSymbols]);
+    }
+}
+
+- (NSMethodSignature *)hookMethodSignatureForSelector:(SEL)aSelector
+{
+    Class class=[self class];
+    Method method=class_getClassMethod(class, aSelector);
+    IMP imp=method_getImplementation(method);
+    if(imp==nil) {
+        return [NSMethodSignature signatureWithObjCTypes:"v@:"];
+    }
+    return [self hookMethodSignatureForSelector:aSelector];
+}
+
+- (void)hookForwardInvocation:(NSInvocation *)anInvocation
+{
+    SEL sel=[anInvocation selector];
+    if ([self respondsToSelector:sel]) {
+        [self hookForwardInvocation:anInvocation];
     }
 }
 

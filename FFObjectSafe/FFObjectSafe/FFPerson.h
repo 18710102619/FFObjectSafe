@@ -6,13 +6,14 @@
 //  Copyright © 2017年 bj.zly.com. All rights reserved.
 //
 
-#import "FFObject.h"
+#import <Foundation/Foundation.h>
 
-@interface FFPerson : FFObject
+@interface FFPerson : NSObject
 
 @property(nonatomic,copy)NSString *name;
 @property(nonatomic,assign)int *age;
 
-- (void)instanceMethod;
+- (void)eat;
+- (void)run;
 
 @end
