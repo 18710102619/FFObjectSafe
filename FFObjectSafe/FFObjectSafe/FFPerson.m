@@ -10,6 +10,8 @@
 #import "FFCar.h"
 #import <objc/runtime.h>
 
+#define kProject 3
+
 void fun (id self, SEL sel);
 
 @implementation FFPerson
@@ -20,7 +22,6 @@ void fun (id self, SEL sel);
 {
     Class class=[self class];
     Method method=class_getClassMethod(class, sel);
-
     IMP imp=method_getImplementation(method);
     if(imp==nil) {
         class_addMethod(self, sel, (IMP)fun, "v@:");
@@ -33,6 +34,7 @@ void fun (id self , SEL sel)
 {
     NSLog(@"%@:%@",NSStringFromClass([self class]),NSStringFromSelector(sel));
 }
+
 
 #pragma mark - 方案二
 
@@ -51,12 +53,10 @@ void fun (id self , SEL sel)
  生成方法签名，给forwardInvocation的参数NSInvocation调用的
  当返回了一个空的方法签名时，会导致程序报错崩溃
  */
-
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
     Class class=[self class];
     Method method=class_getClassMethod(class, aSelector);
-    
     IMP imp=method_getImplementation(method);
     if(imp==nil) {
         return [NSMethodSignature signatureWithObjCTypes:"v@:"];
@@ -68,9 +68,8 @@ void fun (id self , SEL sel)
 {
     SEL sel=[anInvocation selector];
     if ([self respondsToSelector:sel]) {
-        [anInvocation invokeWithTarget:self];
+        [super forwardInvocation:anInvocation];
     }
-    [super forwardInvocation:anInvocation];
 }
 
 @end

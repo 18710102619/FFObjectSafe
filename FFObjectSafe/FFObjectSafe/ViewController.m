@@ -32,7 +32,7 @@
     FFPerson *per=[[FFPerson alloc]init];
     
     [per eat];
-    [FFPerson run];
+    [per run];
     
     [per valueForKey:nil];
     
