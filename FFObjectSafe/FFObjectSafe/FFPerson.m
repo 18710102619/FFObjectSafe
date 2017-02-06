@@ -10,8 +10,6 @@
 #import "FFCar.h"
 #import <objc/runtime.h>
 
-#define kProject 3
-
 void fun (id self, SEL sel);
 
 @implementation FFPerson
@@ -34,7 +32,6 @@ void fun (id self , SEL sel)
 {
     NSLog(@"%@:%@",NSStringFromClass([self class]),NSStringFromSelector(sel));
 }
-
 
 #pragma mark - 方案二
 
